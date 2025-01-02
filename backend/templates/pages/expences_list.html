@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div style="direction: rtl;" class="wrapper">
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper p-5">
+        <!-- Content Header (Page header) -->
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Expense List</h1>
+            </div>
+        </div>
+        <!-- Main content -->
+        <section class="content">
+            <!-- Default box -->
+            <div class="card card-solid">
+                <div class="card-body pb-0">
+                    <!-- Buttons for filtering expenses -->
+                    <div class="d-flex justify-content-between mb-3">
+                        <!-- Additional filters can be added here -->
+                    </div>
+                    <!-- Add New Expense Button -->
+                    <a href="{% url 'expences_add' %}" class="btn btn-primary" style="margin-bottom: 20px;">+ Add New Expense</a>
+
+                    <!-- Expenses Table -->
+                    <div class="row d-flex align-items-stretch">
+                        {% for expense in expenses %}
+                        <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch expense{{ expense.id }}">
+                            <div class="card bg-light">
+                                <div class="card-header text-muted border-bottom-0">
+                                    Expense
+                                </div>
+                                <div class="card-body pt-0">
+                                    <div class="row">
+                                        <div class="col-7">
+                                            <h2 class="lead"><b>{{ expense.expense_type }}</b></h2>
+                                            <ul class="fa-ul text-muted">
+                                                <li class="small"><span class="fa-li"></span>Amount: {{ expense.amount }}</li>
+                                                <li class="small"><span class="fa-li"></span>Date: {{ expense.date }}</li>
+                                                <li class="small"><span class="fa-li"></span>Description: {{ expense.description }}</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-5 text-center">
+                                            <!-- You can add an icon or any image related to the expense if required -->
+                                            <img style="height: 120px; width: 120px;" src="{% static 'dist/img/logo1.jpg' %}" alt="Expense Icon" class="img-circle img-fluid">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="text-right">
+                                        <a href="{% url 'expences_show' expense.id %}" class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i> View Details
+                                        </a>
+                                        <a href="{% url 'expences_update' expense.id %}" class="btn btn-sm btn-warning" style="margin-top: 5px;">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
+                                        <a href="{% url 'expences_remove' expense.id %}" class="btn btn-sm btn-danger" style="margin-top: 5px;">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5" style="direction: rtl; padding-right: 100px; padding-bottom: 0px; display: flex; justify-content: center; align-items: center;">
+    <!-- Heading -->
+    <h2 class="text-center mb-4">Member Details: {{ member.first_name }} {{ member.last_name }}</h2>
+
+    <!-- Card for member details -->
+    <div class="card shadow-lg">
+        <div class="row g-0">
+            <!-- Card Body (Left Side with Member Information) -->
+            <div class="col-md-8">
+                <div class="card-body">
+                    <!-- Personal Information -->
+                    <h4 class="card-title text-primary">{{ member.first_name }} {{ member.last_name }}</h4>
+                    <p><strong>Name:</strong> {{ member.first_name }} {{ member.last_name }}</p>
+                    <p><strong>Phone Number:</strong> {{ member.phone_number }}</p>
+                    <p><strong>Email:</strong> {{ member.email }}</p>
+                    <p><strong>Age:</strong> {{ member.get_age }}</p>
+                    <p><strong>Join Date:</strong> {{ member.join_date }}</p>
+                    <p><strong>Membership Status:</strong> {{ member.is_active }}</p>
+                    
+                    <!-- Team Info (If Available) -->
+                    <p><strong>Team:</strong> 
+                        {% if member.team %}
+                            {{ member.team.team_name }}
+                        {% else %}
+                            No Team
+                        {% endif %}
+                    </p>
+
+                    <!-- Action Button -->
+                    <div class="text-start">
+                        <a href="{% url 'members_list' %}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-arrow-left"></i> Back to Members List
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Member Photo (Right Side) -->
+            <div class="col-md-4">
+            {% if member.profile_picture %}
+             <img src="{{ member.profile_picture.url }}" alt="{{ member.first_name }} {{ member.last_name }}" class="img-fluid rounded-start" style="height: 100%; object-fit: cover; border-left: 1px solid #ddd;">
+            {% else %}
+             <img src="{% static 'dist/img/profile.jpg' %}" alt="{{ member.first_name }} {{ member.last_name }}" class="img-circle img-fluid" style="height: 50%; object-fit: cover; border-left: 1px solid #ddd;">
+             {% comment %} <img style="height: 120px; width: 120px;" src="{% static 'dist/img/profile.jpg' %}" alt="default" class="img-circle img-fluid"> {% endcomment %}
+            {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

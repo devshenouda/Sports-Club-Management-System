@@ -1,0 +1,112 @@
+  <!-- في المكان ده هحط سلايد بار -->
+
+<!-- Main Sidebar Container -->
+<aside style="position: fixed;" class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="{% url 'index'  %}" class="brand-link">
+      <span class="brand-text font-weight-light">Sports Club Management</span> <!-- تغيير اسم الموقع إلى "Sports Club Management" -->
+    </a>
+  
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+        </div>
+        <div class="info">
+          <a href="{% url 'index'  %}" class="d-block">Dashboard</a> <!-- هنا سيكون اسم المستخدم -->
+        </div>
+      </div>
+  
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+  
+          <li class="nav-item">
+            <a href="{% url 'members_list'  %}" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Members <!-- تغيير النص هنا إلى "New Teams" -->
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'teams'  %}" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                New Teams <!-- تغيير النص هنا إلى "New Teams" -->
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'expences'  %}" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                expences <!-- تغيير النص هنا إلى "New Teams" -->
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'revenue_list'  %}" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Revenue <!-- تغيير النص هنا إلى "New Teams" -->
+              </p>
+            </a>
+          </li>
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-copy"></i>
+              <p>
+                Team Categories
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              
+              <li class="nav-item">
+                <a id="addcat" href="#" class="nav-link">
+                    <i class="fa fa-plus "></i>
+                    <p  class="text-light"> Add New category </p> <!-- تغيير النص هنا إلى "Add New Team" -->
+                </a>
+              </li> 
+              <form id="cat" method="POST">
+
+                {% csrf_token %}
+
+                {{formcat}}
+  
+                  <button type="submit" class="btn btn-success">Save</button> <!-- تغيير النص هنا إلى "Save" -->
+                  <button id="backcat" class="btn btn-primary ">Back</button> <!-- تغيير النص هنا إلى "Back" -->
+              </form>  
+              {% for type in category %}
+              <li style="cursor: pointer;" class="nav-item type{{ type.id }}">
+                <a id="" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{type.name}}</p> <!-- نوع الفريق -->
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
+          </li>
+  
+          <li class="nav-header">Teams</li> <!-- تغيير النص هنا إلى "Teams" -->
+          
+          <li style="cursor: pointer;" class="nav-item statusfull">
+            <a id="statusSold" class="nav-link">
+              <i class="nav-icon far fa-circle text-danger"></i>
+              <p class="text">Full Teams</p> <!-- تغيير النص هنا إلى "Full Teams" -->
+            </a>
+          </li>
+          <li style="cursor: pointer;" class="nav-item statusavailable">
+            <a id="" class="nav-link">
+              <i class="nav-icon far fa-circle text-info"></i>
+              <p>Available Teams</p> <!-- تغيير النص هنا إلى "Available Teams" -->
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>

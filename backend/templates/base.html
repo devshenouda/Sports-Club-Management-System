@@ -1,0 +1,266 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar"> 
+<head>
+    <meta charset="utf-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <title>Sports Club Management</title> <!-- تغيير اسم الموقع إلى "Sports Club Management" -->
+    <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="{% static 'plugins/jquery_datepacker/jquery_ui.css' %}">
+    <!-- IonIcons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{% static 'dist/css/adminlte_ar.min.css' %}">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body dir="rtl" class="hold-transition sidebar-mini"> <!-- التنسيق يبقى كما هو مع الاتجاه من اليمين لليسار -->
+
+
+      {% if user.is_authenticated %}
+        {% if user.is_superuser %}
+            {% include 'parts/navbar.html' %}
+            {% include 'parts/sidebar.html' %}
+            {% block content %}{% endblock %}
+            {% include 'parts/footer.html' %}
+        {% else %}
+            <!-- إذا لم يكن المستخدم superuser، يمكن توجيهه إلى صفحة خطأ أو تسجيل خروج -->
+            <div class="alert alert-danger">
+            You have limited permissions. You cannot access this page.
+            </div>
+        {% endif %}
+    {% else %}
+        <!-- إذا لم يكن المستخدم مسجلاً للدخول، سيتم توجيهه إلى صفحة تسجيل الدخول -->
+        <div class="alert alert-warning">
+        Please log in to access this page.
+       <a href="{% url 'login' %}" class="btn btn-primary"> Login</a>
+        </div>
+    {% endif %}
+
+
+
+    <!-- REQUIRED SCRIPTS -->
+    <script src="{% static 'plugins/jquery_datepacker/jquery_ui.js' %}"></script>
+
+    <!-- jQuery -->
+    <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+    <!-- Bootstrap -->
+    <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- AdminLTE -->
+    <script src="{% static 'dist/js/adminlte.js' %}"></script>
+    <!-- OPTIONAL SCRIPTS -->
+
+    <script src="{% static 'plugins/chart.js/Chart.min.js' %}"></script>
+
+    <script src="{% static 'dist/js/demo.js' %}"></script>
+    <script>
+      $(document).ready(function(){
+        $('#myModal').on('shown.bs.modal', function () {
+          $('#myInput').trigger('focus')
+        });
+      });
+      </script>
+   
+   
+   <script>
+    
+{% for category in category %}
+    $(".type{{ category.id }}").click(function() {
+      event.preventDefault();
+        var teamsInCategory = $(".team{{ category.id }}");
+        if (teamsInCategory.length > 0) {
+            $(".teamhide").hide();
+            teamsInCategory.show();
+        } else {
+            $(".teamhide").hide();  // إخفاء كل الفرق إذا كانت الفئة فارغة
+        }
+    });
+
+    
+{% endfor %}
+
+
+$(document).ready(function() {
+  var total = 0;
+  $('.totalamount').each(function(){
+    $(this).hide();
+    total += parseFloat($(this).text());
+  })
+  $('#totalsalarys').text(total);
+  });
+
+  var sub = 0;
+  $('.totalrenevuesub').each(function(){
+    $(this).hide();
+    sub += parseFloat($(this).text());
+  })
+  $('.subrenevue').text(sub);
+  $('.subrenevue').hide();
+
+  
+  var pro = 0;
+  $('.totalrenevueproduct').each(function(){
+    $(this).hide();
+    pro += parseFloat($(this).text());
+  })
+  $('.productrevenue').text(pro); 
+  $('.productrevenue').hide(); 
+  
+
+
+$(document).ready(function() {
+    // عند النقر على "Full Teams"
+    $(".statusfull").click(function() {
+        // إخفاء الفرق التي تحمل حالة "Available team"
+        $(".teamAvailable").hide();
+        // إظهار الفرق التي تحمل حالة "Full team"
+        $(".teamFull").show();
+    });
+
+    // عند النقر على "Available Teams"
+    $(".statusavailable").click(function() {
+        // إخفاء الفرق التي تحمل حالة "Full team"
+        $(".teamFull").hide();
+        // إظهار الفرق التي تحمل حالة "Available team"
+        $(".teamAvailable").show();
+    });
+});
+
+
+$('#revenuequantity').keyup(function(){
+  var quantity = $('#revenuequantity').val();
+  var amount = $('#revenueamount').val();
+  var total = quantity * amount;
+  $('#revenuetotal').val(total);
+})
+
+
+
+</script>
+
+
+
+
+  
+    <script>
+    $(function () {
+      'use strict'
+   
+      var ticksStyle = {
+        fontColor: '#495057',
+        fontStyle: 'bold'
+      }
+
+      var mode      = 'index'
+      var intersect = true
+
+      var $salesChart = $('#sales-chart')
+
+      var salesChart  = new Chart($salesChart, {
+
+        type   : 'bar',
+        
+        data   : {
+          labels  : ['Revenue Details'],
+          datasets: [
+            {
+              backgroundColor: '#007bff',
+              borderColor    : '#007bff',
+              data           : [$(".subrenevue").text()]
+            },
+            {
+              backgroundColor: '#ced4da',
+              borderColor    : '#ced4da',
+              data           : [$(".productrevenue").text()]
+            }
+          ]
+        },
+       
+        options: {
+          maintainAspectRatio: false,
+          tooltips           : {
+            mode     : mode,
+            intersect: intersect
+          },
+          hover              : {
+            mode     : mode,
+            intersect: intersect
+          },
+          legend             : {
+            display: false
+          },
+          scales             : {
+            yAxes: [{
+              // display: false,
+              gridLines: {
+                display      : true,
+                lineWidth    : '4px',
+                color        : 'rgba(0, 0, 0, .2)',
+                zeroLineColor: 'transparent'
+              },
+              ticks    : $.extend({
+                beginAtZero: true,
+
+                // Include a dollar sign in the ticks
+                callback: function (value, index, values) {
+                  if (value >= 1000) {
+                    value /= 1000
+                    value += 'k'
+                  }
+                  return '$' + value
+                }
+              }, ticksStyle)
+            }],
+            xAxes: [{
+              display  : true,
+              gridLines: {
+                display: false
+              },
+              ticks    : ticksStyle
+            }]
+          }
+        }
+      });
+      
+     var pieChart = document.getElementById('visitors-chart').getContext('2d')
+
+      var myPieChart = new Chart(pieChart, {
+        type: 'pie',
+        data: {
+          datasets: [{
+            data: ['{{active}}','{{expired}}','{{expiring_soon}}'],
+            backgroundColor :["#27c100","#f3545d","#fdaf4b"],
+            borderWidth: 10,
+            
+          }],
+          labels: ['Active Subscriptions', ' Expired Subscriptions', 'Expiring Soon'] 
+        },
+        options : {
+          responsive: true, 
+          maintainAspectRatio: false,
+          legend: {
+            position : 'bottom',
+            labels : {
+              fontColor: '#000',
+              fontSize: 15,
+              usePointStyle : true,
+              padding:30
+            }
+          },
+          pieceLabel: {
+            render: 'percentage',
+            fontColor: 'white',
+            fontSize: 14,
+          },
+        }
+      })
+
+    })
+    </script>
+
+</body>
+</html>

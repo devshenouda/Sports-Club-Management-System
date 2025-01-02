@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5" style="direction: rtl; padding-right: 100px; padding-bottom: 0px; display: flex; justify-content: center; align-items: center;">
+    <!-- Heading -->
+    <h2 class="text-center mb-4">تفاصيل الإيراد: {{ revenue.revenue_type }} - {{ revenue.amount }} </h2>
+
+    <!-- Card for revenue details -->
+    <div class="card shadow-lg">
+        <div class="row g-0">
+            <!-- Card Body (Left Side with Revenue Information) -->
+            <div class="col-md-8">
+                <div class="card-body">
+                    <!-- Revenue Information -->
+                    <h4 class="card-title text-primary">{{ revenue.revenue_type }}</h4>
+                    <p><strong>المبلغ:</strong> {{ revenue.amount }} </p>
+                    <p><strong>التاريخ:</strong> {{ revenue.date }}</p>
+                    <p><strong>الوصف:</strong> {{ revenue.description }}</p>
+                    
+                    <!-- Member Info (If Available) -->
+                    <p><strong>العضو:</strong> 
+                        {% if revenue.member %}
+                            {{ revenue.member.first_name }} {{ revenue.member.last_name }}
+                        {% else %}
+                            No Member Assigned
+                        {% endif %}
+                    </p>
+
+                    {% if revenue.product_name %}
+                        <p><strong>اسم المنتج:</strong> {{ revenue.product_name }}</p>
+                        <p><strong>الكمية:</strong> {{ revenue.quantity }}</p>
+                    {% endif %}
+
+                    <!-- Action Button -->
+                    <div class="text-start">
+                        <a href="{% url 'revenue_list' %}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-arrow-left"></i> العودة إلى قائمة الإيرادات
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image Placeholder (If Needed) -->
+            <div class="col-md-4">
+                <i class="fas fa-dollar-sign" style="font-size: 100px; color: #007bff;"></i>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div style="direction: rtl;" class="wrapper">
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper p-5">
+        <!-- Content Header (Page header) -->
+        <div class="card card-info">
+            <div class="card-header">
+                <h3 class="card-title">Expense Details</h3>
+            </div>
+            <!-- /.card-header -->
+
+            <!-- Expense Details -->
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <p><strong>Expense Type:</strong> {{ expense.expense_type }}</p>
+                        <p><strong>Amount:</strong> {{ expense.amount }}</p>
+                        <p><strong>Date:</strong> {{ expense.date }}</p>
+                        <p><strong>Description:</strong> {{ expense.description }}</p>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <img style="height: 120px; width: 120px;" src="{% static 'dist/img/logo1.jpg' %}" alt="Expense Icon" class="img-circle img-fluid">
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+
+            <!-- Footer -->
+            <div class="card-footer">
+                <a href="{% url 'expences_list' %}" class="btn btn-success">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

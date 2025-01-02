@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="direction: rtl;" class="wrapper">
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="card card-danger">
+            <div class="card-header">
+                <h3 class="card-title">Delete Expense</h3>
+            </div>
+            <!-- /.card-header -->
+
+            <!-- Form start -->
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row">
+                    <p class="p-3">Are you sure you want to delete the expense of type "{{ expense.expense_type }}"?</p>
+                    <p class="p-3">Amount: {{ expense.amount }}</p>
+                    <p class="p-3">Date: {{ expense.date }}</p>
+                    <p class="p-3">Description: {{ expense.description }}</p>
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <a href="{% url 'expences_list' %}" type="button" class="btn btn-success">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

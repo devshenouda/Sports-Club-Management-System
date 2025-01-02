@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div style="direction: rtl;" class="wrapper">
+    <!-- Content Wrapper -->
+    <div class="content-wrapper p-5">
+        <!-- Content Header -->
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <h1>Expense Statistics</h1>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <section class="content">
+            <div class="row">
+                <!-- Total Expenses Card -->
+                <div class="col-md-4">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Total Expenses</h3>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="text-center">{{ total_expenses }} EGP</h3>
+                        </div>
+                    </div>
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">View Expenses</h3>
+                        </div>
+                        <div class="card-body">
+                            <a href="{% url 'expences_list'  %}" class="btn btn-primary" style="margin-bottom: 20px; width:100% ; font-size: 20px; ">Expenses List</a>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <!-- Expenses by Category -->
+                <div class="col-md-8">
+                    <div class="card card-warning">
+                        <div class="card-header">
+                            <h3 class="card-title">Expenses by Category</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="expensesByCategoryChart" style="height: 300px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monthly Expenses -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-success">
+                        <div class="card-header">
+                            <h3 class="card-title">Monthly Expenses</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="monthlyExpensesChart" style="height: 300px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Expenses by Category Chart
+    var ctx1 = document.getElementById('expensesByCategoryChart').getContext('2d');
+    var expensesByCategoryChart = new Chart(ctx1, {
+        type: 'pie',
+        data: {
+            labels: [{% for category in expense_categories %}'{{ category.name }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+            datasets: [{
+                data: [{% for category in expense_categories %}{{ category.amount }}{% if not forloop.last %}, {% endif %}{% endfor %}],
+                backgroundColor: ['#FF5733', '#33FF57', '#3357FF', '#FF33A8', '#57FF33'],
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.label + ': ' + tooltipItem.raw + ' EGP';
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // Monthly Expenses Chart
+    var ctx2 = document.getElementById('monthlyExpensesChart').getContext('2d');
+    var monthlyExpensesChart = new Chart(ctx2, {
+        type: 'line',
+        data: {
+            labels: [{% for month in months %}'{{ month }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+            datasets: [{
+                label: 'Monthly Expenses',
+                data: [{% for month_expense in monthly_expenses %}{{ month_expense }}{% if not forloop.last %}, {% endif %}{% endfor %}],
+                borderColor: '#FF5733',
+                backgroundColor: 'rgba(255, 87, 51, 0.2)',
+                fill: true,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return 'Expenses: ' + tooltipItem.raw + ' EGP';
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+{% endblock %}

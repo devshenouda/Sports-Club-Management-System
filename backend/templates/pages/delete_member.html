@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="direction: rtl;" class="wrapper">
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="card card-danger">
+            <div class="card-header">
+                <h3 class="card-title">Delete Member</h3> <!-- Or "Delete Book" if you are working with books -->
+            </div>
+            <!-- /.card-header -->
+
+            <!-- Form start -->
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row">
+                    <p class="p-3">Are you sure you want to delete the member {{ member.first_name }} {{ member.last_name }}?</p>
+                    <!-- Or if you are working with books: "Are you sure you want to delete this book?" -->
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <a href="{% url 'members_list' %}" type="button" class="btn btn-success">Cancel</a>
+                    <!-- Or link to another page depending on the appropriate path, like 'index' -->
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
